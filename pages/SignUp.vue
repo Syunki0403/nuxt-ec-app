@@ -5,40 +5,32 @@
     <TextInput
       :fullWidth="true"
       label="ユーザー名"
-      :multiline="false"
       :required="true"
       :rows="1"
-      :value="username"
       type="text"
       v-model="username"
     />
     <TextInput
       :fullWidth="true"
       label="メールアドレス"
-      :multiline="false"
       :required="true"
       :rows="1"
-      :value="email"
       type="email"
       v-model="email"
     />
     <TextInput
       :fullWidth="true"
       label="パスワード"
-      :multiline="false"
       :required="true"
       :rows="1"
-      :value="password"
       type="password"
       v-model="password"
     />
     <TextInput
       :fullWidth="true"
       label="パスワード（再確認）"
-      :multiline="false"
       :required="true"
       :rows="1"
-      :value="confirmPassword"
       type="password"
       v-model="confirmPassword"
     />

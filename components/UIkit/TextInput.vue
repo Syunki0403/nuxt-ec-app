@@ -4,11 +4,19 @@
       <v-row>
         <v-col>
           <v-text-field
-            v-model="value"
+            v-if="rows === 1"
+            v-model="internalValue"
             :label="label"
             :required="required"
             :type="type"
           ></v-text-field>
+          <v-textarea
+            v-else
+            v-model="internalValue"
+            :label="label"
+            :type="type"
+            :rows="rows"
+          ></v-textarea>
         </v-col>
       </v-row>
     </v-container>
@@ -22,17 +30,26 @@ export default Vue.extend({
   props: {
     fullWidth: Boolean,
     label: String,
-    multiline: Boolean,
     required: Boolean,
     rows: Number,
     value: String,
     type: String,
   },
-  updated: function () {
-    this.$emit("input", this.value);
+  data() {
+    return {
+      internalValue: "",
+    };
   },
+  updated: function () {
+    this.$emit("input", this.internalValue);
+  },
+  // watch: {
+  //   value: {
+  //     immediate: true,
+  //     handler(value) {
+  //       this.internalValue = value;
+  //     },
+  //   },
+  // },
 });
 </script>
-
-<style scoped>
-</style>
