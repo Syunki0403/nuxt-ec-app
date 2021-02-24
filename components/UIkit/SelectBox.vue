@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-select v-model="internalValue" :items="items" :label="label"></v-select>
+          <v-select v-model="internalValue" :items="items" item-value="id" item-text="name" :label="label"></v-select>
         </v-col>
       </v-row>
     </v-container>

@@ -18,11 +18,8 @@
       type="text"
       v-model="description"
     />
-    <SelectBox
-      label="性別"
-      :items="['男性', '女性']"
-      v-model="gender"
-    />
+    <SelectBox label="カテゴリー" :items="categoryBox" v-model="category" />
+    <SelectBox label="性別" :items="genderBox" v-model="gender" />
     <TextInput
       :fullWidth="true"
       label="価格"
@@ -31,17 +28,21 @@
       type="number"
       v-model="price"
     />
+    <div class="center">
+      <PrimaryButton label="商品情報を保存" :event="saveProduct" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { TextInput, SelectBox } from "@/components/UIkit/index";
+import { TextInput, SelectBox, PrimaryButton } from "@/components/UIkit/index";
 
 export default Vue.extend({
   components: {
     TextInput,
     SelectBox,
+    PrimaryButton,
   },
   data() {
     return {
@@ -50,8 +51,28 @@ export default Vue.extend({
       category: "",
       gender: "",
       price: "",
+      categoryBox: [
+        { id: "tops", name: "トップス" },
+        { id: "shirts", name: "シャツ" },
+        { id: "pants", name: "パンツ" },
+      ],
+      genderBox: [
+        { id: "all", name: "全て" },
+        { id: "male", name: "メンズ" },
+        { id: "female", name: "レディース" },
+      ],
     };
   },
-  methods: {},
+  methods: {
+    async saveProduct(): Promise<void> {
+      await this.$accessor.product.saveProduct({
+        name: this.name,
+        description: this.description,
+        category: this.category,
+        gender: this.gender,
+        price: this.price,
+      });
+    },
+  },
 });
 </script>

@@ -1,5 +1,6 @@
 import { getAccessorType } from 'typed-vuex'
 import * as user from '~/store/user'
+import * as product from '~/store/product'
 
 export const state = () => {
     return {}
@@ -21,5 +22,6 @@ export const accessorType = getAccessorType({
     actions,
     modules: {
         user,
+        product,
     },
 })
