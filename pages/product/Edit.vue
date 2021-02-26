@@ -2,6 +2,15 @@
   <div class="c-section-container">
     <h2 class="u-text__headline u-text-center">商品の登録・編集</h2>
     <div class="module-spacer--medium"></div>
+    <div class="p-grid__list-images">
+      <ImagePreview
+        v-for="image in images"
+        :key="image.id"
+        :path="image.path"
+        @click.native="deleteImage(image.id)"
+      />
+    </div>
+    <ImageArea @set-image="images = $event" />
     <TextInput
       :fullWidth="true"
       label="商品名"
@@ -37,15 +46,20 @@
 <script lang="ts">
 import Vue from "vue";
 import { TextInput, SelectBox, PrimaryButton } from "@/components/UIkit/index";
+import { ImageArea, ImagePreview } from "@/components/Products/index";
+import { storage } from "@/plugins/firebase";
 
 export default Vue.extend({
   components: {
     TextInput,
     SelectBox,
     PrimaryButton,
+    ImageArea,
+    ImagePreview,
   },
   data() {
     return {
+      images: [],
       name: "",
       description: "",
       category: "",
@@ -66,12 +80,23 @@ export default Vue.extend({
   methods: {
     async saveProduct(): Promise<void> {
       await this.$accessor.product.saveProduct({
+        images: this.images,
         name: this.name,
         description: this.description,
         category: this.category,
         gender: this.gender,
         price: this.price,
       });
+    },
+    async deleteImage(id: string) {
+      const ref = window.confirm("この画像を削除しますか？");
+      if (!ref) {
+        return false;
+      } else {
+        const newImages = this.images.filter((image) => image.id !== id);
+        this.images = newImages;
+        return storage.ref("image").child(id).delete();
+      }
     },
   },
 });

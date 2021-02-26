@@ -6,7 +6,7 @@ const productsRef = db.collection('products');
 
 export const state = () => ({
     product: {
-        list: [],
+        list: [] as Array<string>,
     }
 })
 
@@ -21,10 +21,11 @@ export const mutations = mutationTree(state, {
 })
 
 export const actions = actionTree({ state, getters, mutations }, {
-    async saveProduct({ commit }, { name, description, category, gender, price }): Promise<void> {
+    async saveProduct({ }, { images, name, description, category, gender, price }): Promise<void> {
         const timestamp = FirebaseTimeStamp.now();
 
         const data: SaveProduct = {
+            images: images,
             category: category,
             description: description,
             gender: gender,
