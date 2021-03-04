@@ -32,24 +32,24 @@ export default Vue.extend({
     label: String,
     required: Boolean,
     rows: Number,
-    value: String,
+    value: [String,Number],
     type: String,
   },
   data() {
     return {
-      internalValue: "",
+      internalValue: this.value,
     };
   },
   updated: function () {
     this.$emit("input", this.internalValue);
   },
-  // watch: {
-  //   value: {
-  //     immediate: true,
-  //     handler(value) {
-  //       this.internalValue = value;
-  //     },
-  //   },
-  // },
+  watch: {
+    value: {
+      immediate: true,
+      handler(value) {
+        this.internalValue = value;
+      },
+    },
+  },
 });
 </script>

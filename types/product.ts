@@ -6,11 +6,17 @@ export type SaveProduct = {
     gender: string,
     name: string,
     price: number,
+    sizes: Array<Size>
     updated_time: unknown,
     created_at?: unknown,
 }
 
-type Image = {
+export type Image = {
     id: string,
     path: string,
+}
+
+export type Size = {
+    size: string,
+    quantity: number
 }

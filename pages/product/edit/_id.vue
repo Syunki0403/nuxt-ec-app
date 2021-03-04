@@ -37,6 +37,8 @@
       type="number"
       v-model="price"
     />
+    <SetSizeArea :sizes="sizes" v-model="sizes" />
+    <div class="module-spacer--medium"></div>
     <div class="center">
       <PrimaryButton label="商品情報を保存" :event="saveProduct" />
     </div>
@@ -46,8 +48,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { TextInput, SelectBox, PrimaryButton } from "@/components/UIkit/index";
-import { ImageArea, ImagePreview } from "@/components/Products/index";
-import { storage } from "@/plugins/firebase";
+import {
+  ImageArea,
+  ImagePreview,
+  SetSizeArea,
+} from "@/components/Products/index";
+import { storage, db } from "@/plugins/firebase";
 
 export default Vue.extend({
   components: {
@@ -56,6 +62,7 @@ export default Vue.extend({
     PrimaryButton,
     ImageArea,
     ImagePreview,
+    SetSizeArea
   },
   data() {
     return {
@@ -65,6 +72,7 @@ export default Vue.extend({
       category: "",
       gender: "",
       price: "",
+      sizes: [],
       categoryBox: [
         { id: "tops", name: "トップス" },
         { id: "shirts", name: "シャツ" },
@@ -75,17 +83,20 @@ export default Vue.extend({
         { id: "male", name: "メンズ" },
         { id: "female", name: "レディース" },
       ],
+      id: window.location.pathname.split("/product/edit")[1],
     };
   },
   methods: {
     async saveProduct(): Promise<void> {
       await this.$accessor.product.saveProduct({
+        id: this.id,
         images: this.images,
         name: this.name,
         description: this.description,
         category: this.category,
         gender: this.gender,
         price: this.price,
+        sizes: this.sizes
       });
     },
     async deleteImage(id: string) {
@@ -98,6 +109,26 @@ export default Vue.extend({
         return storage.ref("image").child(id).delete();
       }
     },
+  },
+  mounted() {
+    if (this.id !== "") {
+      this.id = this.id.split("/")[1];
+
+      db.collection("products")
+        .doc(this.id)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data();
+
+          this.images = data.images;
+          this.name = data.name;
+          this.description = data.description;
+          this.category = data.category;
+          this.gender = data.gender;
+          this.price = data.price.toString();
+          this.sizes = data.sizes;
+        });
+    }
   },
 });
 </script>

@@ -2,8 +2,9 @@
   <div>
     Home
     <div>
-      <router-link to="/signin">サインイン</router-link>
-      <router-link to="/signup">サインアップ</router-link>
+      <NuxtLink to="/signin">サインイン</NuxtLink>
+      <NuxtLink to="/signup">サインアップ</NuxtLink>
+      <NuxtLink to="/product/edit">商品追加</NuxtLink>
     </div>
     <div>
       {{ getUser }}

@@ -23,7 +23,7 @@
     </div>
     <div class="module-spacer--small"></div>
     <div class="center">
-      <router-link to="/signup">アカウント登録</router-link>
+      <NuxtLink to="/signup">アカウント登録</NuxtLink>
     </div>
   </div>
 </template>

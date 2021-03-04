@@ -39,7 +39,7 @@
     </div>
     <div class="module-spacer--small"></div>
     <div class="center">
-      <router-link to="/signin">サインイン</router-link>
+      <NuxtLink to="/signin">サインイン</NuxtLink>
     </div>
   </div>
 </template>

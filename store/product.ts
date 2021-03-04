@@ -1,6 +1,6 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
 import { SaveProduct } from '@/types/product'
-import { auth, db, FirebaseTimeStamp } from '@/plugins/firebase'
+import { db, FirebaseTimeStamp } from '@/plugins/firebase'
 
 const productsRef = db.collection('products');
 
@@ -21,7 +21,7 @@ export const mutations = mutationTree(state, {
 })
 
 export const actions = actionTree({ state, getters, mutations }, {
-    async saveProduct({ }, { images, name, description, category, gender, price }): Promise<void> {
+    async saveProduct({ }, { id, images, name, description, category, gender, price, sizes }): Promise<void> {
         const timestamp = FirebaseTimeStamp.now();
 
         const data: SaveProduct = {
@@ -32,14 +32,17 @@ export const actions = actionTree({ state, getters, mutations }, {
             name: name,
             price: parseInt(price, 10),
             updated_time: timestamp,
+            sizes: sizes,
         }
 
-        const ref = productsRef.doc();
-        const id = ref.id;
-        data.id = id;
-        data.created_at = timestamp;
+        if (id === '') {
+            const ref = productsRef.doc();
+            data.created_at = timestamp;
+            id = ref.id;
+            data.id = id;
+        }
 
-        productsRef.doc(id).set(data).then(() => {
+        productsRef.doc(id).set(data, { merge: true }).then(() => {
             console.log("save product complete");
             this.$router.push("/");
         }

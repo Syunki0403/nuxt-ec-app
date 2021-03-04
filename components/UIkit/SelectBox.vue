@@ -27,5 +27,13 @@ export default Vue.extend({
   updated: function () {
     this.$emit("input", this.internalValue);
   },
+  watch: {
+    value: {
+      immediate: true,
+      handler(value) {
+        this.internalValue = value;
+      },
+    },
+  },
 });
 </script>
